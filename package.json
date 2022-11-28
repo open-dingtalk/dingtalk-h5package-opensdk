@@ -1,0 +1,67 @@
+{
+  "name": "dingtalk-h5package-opensdk",
+  "version": "2.0.8",
+  "description": "钉钉H5离线包工具",
+  "main": "dist/index.js",
+  "directories": {
+    "dist": "dist",
+    "test": "__tests__"
+  },
+  "bin": {
+    "h5package": "./dist/cli/h5package.js"
+  },
+  "scripts": {
+    "build": "tsc ",
+    "lint": "eslint --ext .ts",
+    "lint:fix": "eslint  --fix --ext .ts",
+    "test": "jest -i",
+    "commit": "git cz",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/open-dingtalk/dingtalk-h5package-opensdk.git"
+  },
+  "keywords": [
+    "dingtalk"
+  ],
+  "author": "paseo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/open-dingtalk/dingtalk-h5package-opensdk/issues"
+  },
+  "homepage": "https://github.com/open-dingtalk/dingtalk-h5package-opensdk#readme",
+  "devDependencies": {
+    "@tsconfig/node12": "^1.0.11",
+    "@tsconfig/node14": "^1.0.3",
+    "@types/ali-oss": "^6.16.6",
+    "@types/archiver": "^5.3.1",
+    "@types/download": "^8.0.1",
+    "@types/fs-extra": "^9.0.13",
+    "@types/jest": "^29.2.3",
+    "@types/node": "^18.11.9",
+    "@types/uuid": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "decompress": "^4.2.1",
+    "eslint": "^8.28.0",
+    "jest": "^29.3.1",
+    "ts-jest": "^29.0.3",
+    "typescript": "^4.9.3"
+  },
+  "dependencies": {
+    "ali-oss": "^6.17.1",
+    "archiver": "^5.3.1",
+    "axios": "^0.27.2",
+    "commander": "^9.4.1",
+    "download": "^8.0.0",
+    "fs-extra": "^10.1.0",
+    "glob": "^8.0.3",
+    "uri-js": "^4.4.1",
+    "uuid": "^9.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
