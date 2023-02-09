@@ -70,7 +70,7 @@ export class PackagePacker {
   }) {
     this.file = path.join(process.cwd(), options.filename);
     this.output = fs.createWriteStream(this.file);
-    this.arch = archiver('tar', { gzip: true });
+    this.arch = archiver('zip', { zlib: { level: 9 } });
     this.prom = new Promise((r, c) => {
       this.arch.on('error', err =>{
         console.error('打包失败', err);

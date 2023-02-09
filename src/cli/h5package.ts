@@ -62,7 +62,7 @@ async function run(opts: {
     }
 
     const file = await pack({
-      filename: `${miniAppId}.tgz`,
+      filename: `${miniAppId}.zip`,
       config,
     });
 
@@ -94,7 +94,7 @@ program
   .action(async function (opts) {
     const config = await readResourceConfig(opts);
     await pack({
-      filename: `${config.miniAppId}.tgz`,
+      filename: `${config.miniAppId}.zip`,
       config,
     });
   });
@@ -112,7 +112,7 @@ program
       host: config.host,
     });
     const file = await pack({
-      filename: `${config.miniAppId}.tgz`,
+      filename: `${config.miniAppId}.zip`,
       config,
     });
 

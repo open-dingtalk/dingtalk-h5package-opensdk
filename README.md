@@ -72,10 +72,10 @@ npm run create-h5package
 ```
 
 
-命令列表
+## 命令列表
 
-pack
-本地离线包资源打包，在本地输出打包后的离线资源文件，文件格式为.tar.gz。离线包ID自动在 localresource.json 文件中查找。
+### pack
+本地离线包资源打包，在本地输出打包后的离线资源文件，文件格式为.zip。离线包ID自动在 localresource.json 文件中查找。
 用法：
 
 ```bash
@@ -83,7 +83,7 @@ npx h5package pack
 ```
 
 
-deploy
+### deploy
 将指定版本的H5离线包发布到线上。离线包ID和accessToken自动在 localresource.json 文件中查找。
 用法:
 
@@ -92,7 +92,7 @@ npx h5package deploy <version>
 ```
 
 
-packAndDeploy
+### packAndDeploy
 打包离线包资源，上传并发布到线上。离线包ID和打包配置自动在 localresource.json 文件中查找。
 
 ```bash
@@ -100,7 +100,7 @@ npx h5package packAndDeploy
 ```
 
 
-打包配置文件 Config
+## 打包配置文件 Config
 
 ```js
 {
