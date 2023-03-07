@@ -1,6 +1,6 @@
 {
   "name": "dingtalk-h5package-opensdk",
-  "version": "2.0.9",
+  "version": "2.0.10",
   "description": "钉钉H5离线包工具",
   "main": "dist/index.js",
   "directories": {
