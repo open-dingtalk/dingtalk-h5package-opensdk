@@ -3,7 +3,7 @@
 import { Command, program } from 'commander';
 import fs from 'fs-extra';
 
-import { MiniAppOpenSDK } from '../index';
+import { PackageOpenSDK } from '../index';
 import { PackagePacker, PackerConfig } from '../PackagePacker';
 
 async function readResourceConfig(opts: { config: string }) {
@@ -50,7 +50,7 @@ async function run(opts: {
     const miniAppId = opts.id || config.miniAppId;
     const host = opts.host || config.host;
     const accessToken = opts.accesstoken || config.accessToken;
-    const sdk = new MiniAppOpenSDK();
+    const sdk = new PackageOpenSDK();
 
     sdk.setConfig({
       accessToken,
@@ -106,7 +106,7 @@ program
   .option('--config <config>', '打包配置', './localresource.json')
   .action(async function (opts) {
     const config = await readResourceConfig(opts);
-    const sdk = new MiniAppOpenSDK();
+    const sdk = new PackageOpenSDK();
     sdk.setConfig({
       accessToken: config.accessToken,
       host: config.host,
@@ -132,7 +132,7 @@ program
   .option('--config <config>', '打包配置', './localresource.json')
   .action(async function (this: Command, version: string) {
     const config = await readResourceConfig(this.opts());
-    const sdk = new MiniAppOpenSDK();
+    const sdk = new PackageOpenSDK();
 
     sdk.setConfig({
       accessToken: config.accessToken,

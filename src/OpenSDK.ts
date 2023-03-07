@@ -44,12 +44,10 @@ export interface ICreatePackageResult {
   taskId: string;
 }
 
-export class MiniAppOpenSDK {
-  private sdkConfig?: ISdkOptions;
+export class PackageOpenSDK {
   private gateway!: OpenGateWay;
 
   setConfig(sdkConfig: ISdkOptions) {
-    this.sdkConfig = sdkConfig;
     this.gateway = new OpenGateWay(sdkConfig);
   }
 
@@ -102,7 +100,7 @@ export class MiniAppOpenSDK {
     }
   }
 
-  public async createPackage(options: IUploadOptions) {
+  public async createPackage(options: IUploadOptions): Promise<IGetCreateStatusResult> {
     const maxTimeoutLimit = 1000 * 60 * 5; // 5 minutes
     const { file, ...commonParamenters } = options;
     const { name, ...ossConfig } =

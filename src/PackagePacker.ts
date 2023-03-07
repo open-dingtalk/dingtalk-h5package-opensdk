@@ -64,6 +64,7 @@ export class PackagePacker {
   private bundleMode = 2;
   private includeUrlSet = new Set<string>();
   private resourceConfigFileName = 'localresource.json';
+  private bizData: Record<string, unknown> = {};
 
   constructor(readonly options: {
     filename: string;
@@ -136,6 +137,10 @@ export class PackagePacker {
     this.arch.append(content, { name: urlToPath(url) });
   }
 
+  async appendBizData(bizData: Record<string, unknown>) {
+    this.bizData = bizData;
+  }
+
   // 暂时不支持
   // async appendGlobMapping(globPartten: string, file: string) {}
 
@@ -144,6 +149,7 @@ export class PackagePacker {
       bundleMode: this.bundleMode,
       includeUrls: Array.from(this.includeUrlSet),
       globMappingRules: [],
+      bizData: this.bizData,
     }), { name: this.resourceConfigFileName, });
 
     await this.arch.finalize();

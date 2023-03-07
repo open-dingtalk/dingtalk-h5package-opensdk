@@ -1,5 +1,5 @@
-import { MiniAppOpenSDK } from './OpenSDK';
-
+import { PackageOpenSDK } from './OpenSDK';
 
 export * from './OpenSDK';
-export const sdk = new MiniAppOpenSDK();
+export * from './PackagePacker';
+export const sdk = new PackageOpenSDK();

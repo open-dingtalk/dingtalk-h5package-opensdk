@@ -1,6 +1,6 @@
 {
   "name": "dingtalk-h5package-opensdk",
-  "version": "2.0.9",
+  "version": "2.0.10",
   "description": "钉钉H5离线包工具",
   "main": "dist/index.js",
   "directories": {
@@ -32,6 +32,7 @@
   },
   "homepage": "https://github.com/open-dingtalk/dingtalk-h5package-opensdk#readme",
   "devDependencies": {
+    "@changesets/cli": "^2.26.0",
     "@tsconfig/node12": "^1.0.11",
     "@tsconfig/node14": "^1.0.3",
     "@types/ali-oss": "^6.16.6",

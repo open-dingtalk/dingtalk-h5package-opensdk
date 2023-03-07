@@ -134,5 +134,38 @@ npx h5package packAndDeploy
 }
 ```
 
+## 代码模式
+
+```js
+
+import { PackagePacker, H5PackageOpenSDK } from 'dingtalk-package-opensdk';
+
+const miniAppId = '离线包ID';
+const accessToken = 'your api token';
+const sdk = new H5PackageOpenSDK();
+const packer = new PackagePacker({
+  filename: 'dist.zip',
+});
+sdk.setConfig({ accessToken });
+
+// 添加本地文件或目录到指定URL
+await packer.appendFile('https://www.example.com/myapp', './dist');
+// 添加外部文件
+await packer.appendUrl('https://unpkg.com/jquery@3.6.1/dist/jquery.js');
+
+// 添加自定义数据，自定义数据在调用 biz.resource.getInfo 时返回
+await packer.addBizData({
+  assetVersion: 'x.y.z',
+});
+
+const file = await packer.finalize();
+
+// 创建离线包
+const { version } = await sdk.createPackage({ miniAppId, file });
+
+// 发布离线包
+await sdk.publishPackage({ miniAppId, version });
+
+```
 
 
