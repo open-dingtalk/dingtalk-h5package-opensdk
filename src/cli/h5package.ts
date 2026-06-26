@@ -34,6 +34,12 @@ async function pack(opts: { filename: string; config: PackerConfig }) {
     await packer.appendUrl(externalAsset);
   }
 
+  // 添加 globMappingRules URL 重写规则
+  const { globMappingRules } = opts.config;
+  if (globMappingRules && Object.keys(globMappingRules).length > 0) {
+    await packer.appendGlobMappingRules(globMappingRules);
+  }
+
   const file = await packer.finalize();
 
   return file;

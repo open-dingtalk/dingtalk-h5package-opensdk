@@ -1,8 +1,8 @@
-import archiver from 'archiver';
-import fs from 'fs-extra';
-import path from 'path';
-import download from 'download';
-import glob from 'glob';
+import archiver from "archiver";
+import fs from "fs-extra";
+import path from "path";
+import download from "download";
+import glob from "glob";
 
 // 文件路径最大长度是100，扣除"web_assets/"目录，实际最大长度是89;
 export const MAX_PATH_LENGTH = 88;
@@ -25,7 +25,7 @@ export function urlToPath(url: string) {
     throw new Error(`无效的资源地址: ${url}`);
   }
 
-  if (uri.protocol !== 'https:') {
+  if (uri.protocol !== "https:") {
     throw new Error(`无效的资源地址: ${url}, 离线包只支持 https 协议`);
   }
 
@@ -33,7 +33,7 @@ export function urlToPath(url: string) {
 
   let p = `${host}${uri.pathname}`;
 
-  if (p.endsWith('/')) {
+  if (p.endsWith("/")) {
     p = p.slice(0, -1);
   }
 
@@ -41,20 +41,19 @@ export function urlToPath(url: string) {
 }
 
 export function pathToUrl(filename: string) {
-  const sep = '/';
+  const sep = "/";
   const arr = filename.split(sep);
   const host = arr[0];
   const pathname = arr.slice(1).join(sep);
 
-  let p = `https://${host.replace('@', ':')}/${pathname}`;
+  let p = `https://${host.replace("@", ":")}/${pathname}`;
 
-  if (p.endsWith('/')) {
+  if (p.endsWith("/")) {
     p = p.slice(0, -1);
   }
 
   return p;
 }
-
 
 export class PackagePacker {
   private arch: archiver.Archiver;
@@ -63,23 +62,26 @@ export class PackagePacker {
   private file: string;
   private bundleMode = 2;
   private includeUrlSet = new Set<string>();
-  private resourceConfigFileName = 'localresource.json';
+  private globMappingRules: Array<[string, string]> = [];
+  private resourceConfigFileName = "localresource.json";
   private bizData: Record<string, unknown> = {};
 
-  constructor(readonly options: {
-    filename: string;
-  }) {
+  constructor(
+    readonly options: {
+      filename: string;
+    }
+  ) {
     this.file = path.join(process.cwd(), options.filename);
     this.output = fs.createWriteStream(this.file);
-    this.arch = archiver('zip', { zlib: { level: 9 } });
+    this.arch = archiver("zip", { zlib: { level: 9 } });
     this.prom = new Promise((r, c) => {
-      this.arch.on('error', err =>{
-        console.error('打包失败', err);
+      this.arch.on("error", (err) => {
+        console.error("打包失败", err);
         c(err);
       });
-      this.output.on('close', () =>{
+      this.output.on("close", () => {
         // eslint-disable-next-line no-console
-        console.log('打包完成', this.file);
+        console.log("打包完成", this.file);
         r();
       });
     });
@@ -90,7 +92,7 @@ export class PackagePacker {
     const p = path.resolve(fileOrDirectory);
     const stat = await fs.stat(p);
 
-    if (stat.isDirectory()) {    
+    if (stat.isDirectory()) {
       await this.appendDirectory(url, p);
     } else if (stat.isFile()) {
       this._file(url, p);
@@ -106,19 +108,19 @@ export class PackagePacker {
       console.warn(
         `以下文件被忽略(文件路径长度>${MAX_PATH_LENGTH}): ${path.relative(
           process.cwd(),
-          filename,
+          filename
         )}`
       );
       return;
     }
 
-    this.arch.file(filename, { name: fullFilePath, });
+    this.arch.file(filename, { name: fullFilePath });
     this.includeUrlSet.add(url);
   }
 
   async appendDirectory(url: string, directory: string) {
     const prefixURL = new URL(url);
-    const files = glob.sync('**/*', { cwd: directory, nodir: true, });
+    const files = glob.sync("**/*", { cwd: directory, nodir: true });
 
     for (const file of files) {
       const filename = path.join(directory, file);
@@ -141,19 +143,33 @@ export class PackagePacker {
     this.bizData = bizData;
   }
 
+  /**
+   * 添加 globMappingRules URL 重写规则
+   * @param rules 键值对，key 为匹配 pattern，value 为重写目标
+   * 例如: { "https://domain.com/": "https://domain.com/index.html" }
+   * 输出格式为二维数组: [["pattern", "target"], ...]
+   */
+  async appendGlobMappingRules(rules: Record<string, string>) {
+    for (const [pattern, target] of Object.entries(rules)) {
+      this.globMappingRules.push([pattern, target]);
+    }
+  }
+
   // 暂时不支持
   // async appendGlobMapping(globPartten: string, file: string) {}
 
   async finalize() {
-    await this.arch.append(JSON.stringify({ 
-      bundleMode: this.bundleMode,
-      includeUrls: Array.from(this.includeUrlSet),
-      globMappingRules: [],
-      bizData: this.bizData,
-    }), { name: this.resourceConfigFileName, });
+    await this.arch.append(
+      JSON.stringify({
+        bundleMode: this.bundleMode,
+        includeUrls: Array.from(this.includeUrlSet),
+        globMappingRules: this.globMappingRules,
+        bizData: this.bizData,
+      }),
+      { name: this.resourceConfigFileName }
+    );
 
     await this.arch.finalize();
-    return Promise.resolve(this.prom)
-      .then(() => this.file);
+    return Promise.resolve(this.prom).then(() => this.file);
   }
 }
