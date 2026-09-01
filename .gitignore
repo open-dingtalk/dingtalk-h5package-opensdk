@@ -132,3 +132,5 @@ dist
 .pnp.*
 
 package-lock.json
+
+AGENTS.md

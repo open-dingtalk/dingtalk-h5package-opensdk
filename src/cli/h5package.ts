@@ -90,15 +90,19 @@ async function run(opts: {
 
 program
   .summary('钉钉H5离线包SDK')
-  .version('2.0.0', '-v, --version', 'output the current version')
+  .version('2.0.12', '-v, --version', 'output the current version')
   .addHelpCommand('help', 'display help for command');
 
 program
   .command('pack')
   .description('打包生成离线包')
-  .option('--config <config>', '打包配置', './localresource.json')
-  .action(async function (opts) {
-    const config = await readResourceConfig(opts);
+  .option(
+    '-c, --config <file>',
+    '离线包资源配置文件',
+    './localresource.json'
+  )
+  .action(async function (this: Command) {
+    const config = await readResourceConfig(this.opts());
     await pack({
       filename: `${config.miniAppId}.zip`,
       config,
@@ -109,9 +113,13 @@ program
   .command('upload')
   .description('上传离线包')
   .option('--file <file>', '离线包地址')
-  .option('--config <config>', '打包配置', './localresource.json')
-  .action(async function (opts) {
-    const config = await readResourceConfig(opts);
+  .option(
+    '-c, --config <file>',
+    '离线包资源配置文件',
+    './localresource.json'
+  )
+  .action(async function (this: Command) {
+    const config = await readResourceConfig(this.opts());
     const sdk = new PackageOpenSDK();
     sdk.setConfig({
       accessToken: config.accessToken,
@@ -131,11 +139,16 @@ program
   });
 
 program
-  .command('deploy', '发布离线包到线上')
+  .command('deploy')
+  .description('发布离线包到线上')
   .argument('<version>', '离线包版本')
   .option('--id <miniAppId>', '离线包ID')
   .option('--host <host>', '网关域名')
-  .option('--config <config>', '打包配置', './localresource.json')
+  .option(
+    '-c, --config <file>',
+    '离线包资源配置文件',
+    './localresource.json'
+  )
   .action(async function (this: Command, version: string) {
     const config = await readResourceConfig(this.opts());
     const sdk = new PackageOpenSDK();
@@ -159,7 +172,11 @@ program
   .option('-t, --accesstoken <accessToken>', '开发者后台apiToken')
   .option('-i, --id <miniAppId>', '离线包ID')
   .option('-h, --host <host>', '网关域名')
-  .option('--config <config>', '打包配置', './localresource.json')
+  .option(
+    '-c, --config <file>',
+    '离线包资源配置文件',
+    './localresource.json'
+  )
   .action(async function (this: Command) {
     await run(this.opts());
   });

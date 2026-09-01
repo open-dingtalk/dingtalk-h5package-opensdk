@@ -82,6 +82,14 @@ npm run create-h5package
 npx h5package pack
 ```
 
+可通过 `-c, --config <file>` 指定其他文件名或路径：
+
+```bash
+npx h5package pack --config ./localresource.production.json
+```
+
+该参数只影响本地读取的配置文件；生成的 ZIP 中，离线包元数据文件仍固定名为 `localresource.json`。
+
 
 ### deploy
 将指定版本的H5离线包发布到线上。离线包ID和accessToken自动在 localresource.json 文件中查找。
@@ -98,6 +106,8 @@ npx h5package deploy <version>
 ```bash
 npx h5package packAndDeploy
 ```
+
+`upload`、`deploy` 和 `packAndDeploy` 同样支持 `-c, --config <file>`。
 
 
 ## 打包配置文件 Config
@@ -167,5 +177,4 @@ const { version } = await sdk.createPackage({ miniAppId, file });
 await sdk.publishPackage({ miniAppId, version });
 
 ```
-
 
