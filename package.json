@@ -8,7 +8,7 @@
     "test": "__tests__"
   },
   "bin": {
-    "h5package": "./dist/cli/h5package.js"
+    "h5package": "dist/cli/h5package.js"
   },
   "scripts": {
     "build": "tsc ",
